@@ -1,10 +1,11 @@
-gap> g:=1;
+#INTRO
+gap> g:=1; #Input: can be changed to our desired values of genus and cusps, respectively. 
 gap> n:=2;  
   
 gap> m:=12*g-6+4*n;; 
 gap> F:= FreeGroup("x","y");;
 gap> x:=F.1;; y:=F.2;;
-gap> G:=F/[(x)^2, (y)^3, (x*y)^m];; 
+gap> G:=F/[(x)^2, (y)^3, (x*y)^m];; #Fuchsian triangle group of signature (2,3,m).
 
 gap> torsion:=[];;
 gap> for j in [1..(m-1)] do;
@@ -20,9 +21,9 @@ gap> Print("Número de subgrupos posibles en el primer intento: ",
 
 gap> listasubgrupos:=[];;
 gap> for k in [1..Size(listagrupos_0)] do;
-> if Size(MovedPoints(List(CosetTable(G, listagrupos_0[k]),
-     PermList)[1]))=indice and Index(G, listagrupos_0[k])=indice
-     then
+> if Size(MovedPoints(List(CosetTable(G, listagrupos_0[k]),PermList)[1]))=indice and
+     Index(G, listagrupos_0[k])=indice and
+     CycleStructurePerm(List(CosetTable(G, listagrupos_0[k]), PermList)[3])[2]=m/2+1-n-2*g then
 > Append(listasubgrupos,[listagrupos_0[k]]);
 > fi;
 > od;
@@ -57,25 +58,4 @@ gap> for k in [1..Size(listamonodromias)] do;
      normalizador*listamonodromias[k][2]*normalizador^(-1),
      normalizador*listamonodromias[k][3]*normalizador^(-1)]]);
 > od;
-gap> Print(listamonodromiasnormalizadas);
-
-gap> listasvalidas:=[];;
-gap> for i in [1..Size(listamonodromiasnormalizadas)] do;
-> c:=0;
-> for j in [1..m-1] do;
-> if OnPoints(j,listamonodromiasnormalizadas[i][1])=j+1 then
-> c:=c+1;
-> fi;
-> od;
-> if OnPoints(m,listamonodromiasnormalizadas[i][1])=1 then
-> c:=c+1;
-> fi;
-
-> if c=n and
-     CycleStructurePerm(listamonodromiasnormalizadas[i][2])[2]=m/2+1-n-2*g then
-> Append(listasvalidas, [listamonodromiasnormalizadas[i]]);
-> fi;
-> od;
-gap> Print("Número de identificaciones de los lados válidas: ",
-     Size(listasvalidas));
-gap> Print("Tales identificaciones vienen dadas por:", "\n", listasvalidas);
+gap> Print("There exists exactly ", Size(listamonodromiasnormalizadas), " (extremal disc, surface) pairs where the surface is extremal and has genus ", g, " and ", n, " cusps. The configurations among the sides of the fundamental domain in each of them is given by: \n", listamonodromiasnormalizadas);
