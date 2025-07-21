@@ -1,0 +1,55 @@
+gap> #This code describes all the extremal disc configurations associated to extremal, orientable hyperbolic surfaces with genus g and absolute number of boundary components rho via the identification with their corresponding fundamental domains of triangular subgroups. In particular, it describes the usual fundamental domain of all the subgroups of index M of the Fuchsian triangle group of signature (2,3,M) that have exactly rho inequivalent elliptic elements of order 3, with M=12*g+4*rho-6.
+gap> g:=1;; #Input: can be changed to our desired value of genus.
+gap> rho:=2;; #Input: can be changed to our desired extended number of boundary components.
+gap> M:=12*g+4*rho-6;; 
+gap> #
+gap> F:= FreeGroup("x","y");;
+gap> x:=F.1;; y:=F.2;;
+gap> G:=F/[(x)^2, (y)^3, (x*y)^M];; #Fuchsian triangle group of signature (2,3,M).
+gap> torsion:=[x];; #List of torsion elements in G except y and y^2 (up to conjugation).
+gap> for j in [1..(M-1)] do;
+> Append(torsion, [(x*y)^j]);
+> od;
+gap> #
+gap> #We want to find the index M subgroups of G that contain the element y (due to the existence of, at least, one cusp or boundary component) but do not contain any element in the list "torsion". 
+gap> index:=M;;
+gap> T:=Subgroup(G,[GeneratorsOfGroup(G)[2]]);;
+gap> listofsubgroups_0:= LowIndexSubgroupsFpGroup(G,T,index,torsion);; 
+gap> listofsubgroups:=[];;
+gap> for k in [1..Size(listofsubgroups_0)] do;
+> if Index(G, listofsubgroups_0[k])=index and #Subgroups with the desired index M.
+> Size(MovedPoints(List(CosetTable(G, listofsubgroups_0[k]), PermList)[1]))=index and #The fundamental domain of the subgroup is a M-gon whose sides are identified by pairs.
+CycleStructurePerm(List(CosetTable(G, listofsubgroups_0[k]), PermList)[3])[2]=M/2+1-rho-2*g then #The number of vertices of the fundamental domain is the desired one.
+> Append(listofsubgroups,[listofsubgroups_0[k]]);
+> fi;
+> od;
+gap> #
+gap> #Calculation of the associated monodromy morphisms:
+gap> listofmonodromies_0:=[];;
+gap> for j in [1..Size(listofsubgroups)] do;
+> Append(listofmonodromies_0, List(CosetTable(G,listofsubgroups[j]){[1,3]}, PermList)); #Permutations given by the image of the generators x and y by the monodromy morphisms.
+> od;
+gap> listofmonodromies:=[];; 
+gap> for i in [1..Size(listofmonodromies_0)/2] do;
+> Append(listofmonodromies, [[listofmonodromies_0[2*i-1], listofmonodromies_0[2*i], ((listofmonodromies_0[2*i-1])*(listofmonodromies_0[2*i]))^(-1)]]);
+> od;
+gap> #For clearness, we are going to normalize the third permutation via conjugation by a fixed permutation, which is equivalent to re-label the sides of the fundamental domain.
+gap> normalized_list:=[];;
+gap> for j in [1..M-1] do;
+> Add(normalized_list,j+1);
+> od;
+gap> Add(normalized_list,1);
+gap> normalized:=PermList(normalized_list);;
+gap> listofnormalizedmonodromies:=[];;
+gap> for k in [1..Size(listofmonodromies)] do;
+> norm:=RepresentativeAction(SymmetricGroup(index),normalized,listofmonodromies[k][3]);
+> Append(listofnormalizedmonodromies, [[norm*listofmonodromies[k][1]*norm^(-1),norm*listofmonodromies[k][2]*norm^(-1),norm*listofmonodromies[k][3]*norm^(-1)]]);
+> #Now, the third entry of each monodromy 3-tuple is the permutation called "normalized", so the sides of the fundamental domain are labelled counterclockwise.
+> od;
+gap> side_pairings:=[];;
+gap> for k in [1..Size(listofnormalizedmonodromies)] do;
+> Append(side_pairings, [[listofnormalizedmonodromies[k][1]]]);
+> od;
+gap> Print("There exists exactly ", Size(listofnormalizedmonodromies), " subgroups of the Fuchsian triangle group of signature (2,3,", M, ") associated to the extremal \ndisc configurations of orientable surfaces that have genus ", g, ", n cusps and b boundary components, where the \nextended number of boundary components n+b is ", rho, ".");
+gap> Print("The corresponding fundamental domains of these subgroups are given by regular ", M, "-agons with all their inner angles \nof measure 2pi/3 and with ", rho, " marked vertices, given by the pairs of consecutive sides of the fundamental domain \nthat are identified by an element that fix their common vertex.\n");
+gap> Print("If we label the sides of each of these fundamental domains counterclockwise, their side-pairing patterns are given by the following permutations: ", "\n", side_pairings);
