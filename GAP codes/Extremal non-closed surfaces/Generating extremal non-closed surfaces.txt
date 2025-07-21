@@ -1,0 +1,81 @@
+gap> #This code describes at least s different extremal disc configurations associated to extremal hyperbolic surfaces with Euler characteristic chi and extended number of boundary components rho via the identification with their corresponding fundamental domains of triangular subgroups. In particular, it describes the usual fundamental domain of s different subgroups of index 2M of the extended triangle group of signature (2,3,M) that have exactly rho inequivalent elliptic elements of order 3, with M=6-6*chi-2*rho.
+gap> chi:=-1;; #Input: can be changed to our desired value of Euler-Poincaré characteristic.
+gap> rho:=1;; #Input: can be changed to our desired extended number of boundary components.
+gap> s:=4;; #Input: can be changed to our desired number of associated triangle subgroups calculated.
+gap> M:=6-6*chi-2*rho;;
+gap> #
+gap> F:= FreeGroup("x","y","z");;
+gap> x:=F.1;; y:=F.2;; z:=F.3;;
+gap> G:=F/[(x)^2, (y)^2, (z)^2, (x*y)^2, (y*z)^3, (z*x)^M];; #Extended triangle group of signature (2,3,M).
+gap> torsion:=[x,y,z,x*y];; #List of torsion elements in G except y*z and (y*z)^2 (up to conjugation).
+gap> for j in [1..(M-1)] do;
+> Append(torsion, [(z*x)^j]);
+> od;
+gap> #
+gap> #We want to find s different subgroups of index 2*M of G that contain the element y*z (due to the existence of, at least, one cusp or boundary component) but do not contain any element in the list "torsion".
+gap> index:=2*M;;
+gap> T:=Subgroup(G,[GeneratorsOfGroup(G)[2]*GeneratorsOfGroup(G)[3]]);;
+gap> listofsubgroups_0:=LowIndexSubgroupsFpGroup(G,T,index,torsion);;
+gap> listofsubgroups_aux:=listofsubgroups_0;;
+gap> Append(listofsubgroups_aux, [listofsubgroups_0[1]]); #We add listofsubgroups_0[1] at the end of the list for a technical reason: The first element of the iterator won't be read.
+gap> iter:=Iterator(listofsubgroups_aux);;
+gap> subgroup:=NextIterator(iter);;
+gap> l:=0;; 
+gap> listofsubgroups:=[];;
+gap> while not IsDoneIterator(iter) and l<s do
+> if Index(G,subgroup)=index and #Subgroups with the desired index 2*M.
+> Size(MovedPoints(List(CosetTable(G, subgroup), PermList)[1]*List(CosetTable(G, subgroup), PermList)[3]))=index and #The fundamental domain of the subgroup is a M-gon whose sides are identified by pairs.
+> CycleStructurePerm(List(CosetTable(G, subgroup), PermList)[3]*List(CosetTable(G, subgroup), PermList)[5])[2]=M+2*chi-2 then #The number of vertices of the fundamental domain is the desired one.
+> l:=l+1;
+> Append(listofsubgroups, [subgroup]);
+> fi;
+> subgroup := NextIterator(iter);
+> od;
+gap> #
+gap> if IsDoneIterator(iter) and l<s then
+> Print("There are not ", s, " different subgroups of index ", 2*M, " of the extended triangle group of signature (2,3,", M,") with ", rho, " inequivalent elliptic elements of order 3.");
+> else
+> #Calculation of the associated monodromy morphisms:
+> listofmonodromies_0:=[];;
+> for j in [1..Size(listofsubgroups)] do;
+> Append(listofmonodromies_0, List(CosetTable(G,listofsubgroups[j]){[1,3,5]}, PermList)); #Permutations given by the image of the generators x,y and z by the monodromy morphisms.
+> od;
+> normalized:=[];; #We want to normalize the first permutation of each 3-tuple to ensure that the edges of the corresponding fundamental domains are always by the subdivision (n,n+1), with n a odd number between 1 and 2*M.
+> for k in [1..2*M] do;
+> if IsOddInt(k)=true then
+> Append(normalized, [k+1]);
+> else
+> Append(normalized, [k-1]);
+> fi;
+> od;
+> norm:=PermList(normalized);;
+> listofmonodromies:=[];;
+> for k in [1..Size(listofmonodromies_0)/3] do;
+> normalizator:=RepresentativeAction(SymmetricGroup(index),norm,listofmonodromies_0[3*k-2]);
+> Append(listofmonodromies, [[normalizator*listofmonodromies_0[3*k-2]*normalizator^(-1),normalizator*listofmonodromies_0[3*k-1]*normalizator^(-1),normalizator*listofmonodromies_0[3*k]*normalizator^(-1)]]);
+> od;
+> #The first permutation of each 3-tuple gives us the pairings between half-sides of each edge of the fundamental domain, while the third one gives us the pairings between half-sides that share a vertex in the fundamental domain.
+> #
+> side_pairings_0:=[];;
+> for k in [1..Size(listofmonodromies)] do;
+> Append(side_pairings_0, [[listofmonodromies[k][1]*listofmonodromies[k][2], listofmonodromies[k][2]*listofmonodromies[k][3], listofmonodromies[k][3]*listofmonodromies[k][1]]]);
+> od;
+> side_pairings:=[];;
+> for k in [1..Size(listofmonodromies)] do;
+> list:=[];
+> for i in [1..2*M] do;
+> if IsOddInt(i)=true then
+> Append(list, [(i+1)^side_pairings_0[k][1]]);
+> else
+> Append(list, [(i-1)^side_pairings_0[k][1]]);
+> fi;
+> od;
+> Append(side_pairings, [PermList(list)]);
+> od;
+> Print("We can consider at least ", s, " subgroups of the extended triangle group of signature (2,3,", M, ") associated to the extremal \ndisc configurations of surfaces that have Euler characteristic ", chi, ", n cusps and b boundary components, where the \nextended number of boundary components n+b is ", rho, ".");
+> for k in [1..Size(listofmonodromies)] do;
+> Print("The fundamental domain of the triangle subgroup associated to the ", k, "-th case is given by a regular ", M, "-gon with all \nits inner angles of measure 2pi/3 and with ", rho, " marked vertices, given by the pairs of consecutive sides \nof the fundamental domain that are identified by an element that fix their common vertex.\n");
+> Print("All of its sides are divided by their middle point and the half-sides of a same edge are given by \n", norm, "\nwhile the half-sides that share some vertex are given by \n", listofmonodromies[k][3], ".\n");
+> Print("The identifications among the half-sides of that fundamental domain are given by \n", side_pairings[k], ".\n\n");
+> od;
+> fi;
