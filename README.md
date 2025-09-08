@@ -1,6 +1,6 @@
 # Extremal Hyperbolic Surfaces
 
-This directory contains GAP and SAGE scripts for the study and generation of extremal hyperbolic surfaces, both closed and non-closed (ie. with geodesic boundary and/or cusps). The codes are organized to count and generate fundamental domains, subgroups, and extremal disc configurations associated with these surfaces.
+This directory contains GAP and SAGE scripts for the study and generation of extremal hyperbolic surfaces, both closed and non-closed (ie. with geodesic boundary and/or cusps). The codes are organized to count and generate fundamental domains, triangle subgroups, and extremal disc configurations associated with these surfaces.
 
 ## Structure
 
