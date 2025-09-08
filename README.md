@@ -34,8 +34,8 @@ The scripts focus on:
 
 ## References
 
-The main reference is an unpublished preprint titled "THE NEC GROUP UNIFORMIZATION OF EXTREMAL HYPERBOLIC SURFACES WITH BOUNDARY AND/OR CUSPS". For more details on the mathematical theory, see the comments in each script and relevant literature on hyperbolic geometry, extremal surfaces and Fuchsian/NEC groups.
+The main reference is an unpublished preprint titled _THE NEC GROUP UNIFORMIZATION OF EXTREMAL HYPERBOLIC SURFACES WITH BOUNDARY AND/OR CUSPS_, written by Ernesto Girondo and Claudia Muñoz. For more details on the mathematical theory, see the comments in each script and relevant literature on hyperbolic geometry, extremal surfaces and Fuchsian/NEC groups.
 
 ---
 
-*Authors: Claudia Muñoz Jerónimo and Ernesto Girondo Sirvent.
+*Authors: Claudia Muñoz and Ernesto Girondo.
