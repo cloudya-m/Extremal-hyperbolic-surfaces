@@ -1,0 +1,9 @@
+There exists exactly 1 subgroups of the Fuchsian triangle group of signature (2,3,10) associated to the extremal 
+disc configurations of orientable surfaces that have genus 0, n cusps and b boundary components, where the 
+extended number of boundary components n+b is 4.
+The corresponding fundamental domains of these subgroups are given by regular 10-agons with all their inner angles 
+of measure 2pi/3 and with 4 marked vertices, given by the pairs of consecutive sides of the fundamental domain 
+that are identified by an element that fix their common vertex.
+If we label the sides of each of these fundamental domains counterclockwise, their side-pairing patterns are given by \
+the following permutations: 
+[ [ ( 1, 2)( 3, 8)( 4, 5)( 6, 7)( 9,10) ] ]
