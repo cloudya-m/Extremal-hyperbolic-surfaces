@@ -1,0 +1,14 @@
+There exist exactly 1 subgroups of the extended triangle group of signature (2,3,6) associated to the extremal 
+disc configurations of surfaces that have Euler characteristic -1, n cusps and b boundary components, where the 
+extended number of boundary components n+b is 3.
+
+The fundamental domain of the triangle subgroup associated to the 1-th case is given by a regular 6-gon with all 
+its inner angles of measure 2pi/3 and with 3 marked vertices, given by the pairs of consecutive sides 
+of the fundamental domain that are identified by an element that fix their common vertex.
+All of its sides are divided by their middle point and the half-sides of a same edge are given by 
+( 1, 2)( 3, 4)( 5, 6)( 7, 8)( 9,10)(11,12)
+while the half-sides that share some vertex are given by 
+( 1, 3)( 2, 5)( 4, 7)( 6,10)( 8,12)( 9,11).
+The identifications among the half-sides of that fundamental domain are given by 
+( 1, 3)( 2, 4)( 5, 9)( 6,10)( 7,11)( 8,12).
+
